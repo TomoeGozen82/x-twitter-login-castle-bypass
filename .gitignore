@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Secrets and local runtime data
+.env
+proxies*.txt
+accounts_2fa.json
+
+# Captures and scratch (reverse-engineering inputs, never shipped)
+*.chlsj
+*.har
+*.saz
+AGENT_HANDOFF.md
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log
