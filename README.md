@@ -4,7 +4,7 @@
   <img src="https://img.shields.io/badge/Type-Reverse%20Engineering-blue?style=flat-square" alt="Type: Reverse Engineering">
   <img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" alt="License: MIT">
   <img src="https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white&style=flat-square" alt="Python">
-  <a href="https://github.com/glizzykingdreko/x-twitter-login-castle-bypass"><img src="https://img.shields.io/github/stars/glizzykingdreko/x-twitter-login-castle-bypass?style=flat-square&logo=github" alt="GitHub stars"></a>
+  <a href="https://github.com/TomoeGozen82/x-twitter-login-castle-bypass"><img src="https://img.shields.io/github/stars/TomoeGozen82/x-twitter-login-castle-bypass?style=flat-square&logo=github" alt="GitHub stars"></a>
   <br />
 </div>
 
@@ -17,7 +17,7 @@ Log into an X / Twitter account through the new JetFuel onboarding flow on `jf.x
 
 This is the working code behind my login flow reconstruction series, [Episode 1, Headers generation](https://takionapi.tech/blog/x-former-twitter-login-flow-reconstruction-episode-1-headers-generation) and [Episode 2, UI Metrics](https://takionapi.tech/blog/x-former-twitter-login-flow-reconstruction-episode-2-ui-metrics).
 
-Check as well the [RockstarGames Castle bypass](https://github.com/glizzykingdreko/rockstargames-castle-bypass) for creating rockstar accounts.
+Check as well the [RockstarGames Castle bypass](https://github.com/TomoeGozen82/rockstargames-castle-bypass) for creating rockstar accounts.
 
 ## Table of Contents
 - [Quick Start](#quick-start)
@@ -46,7 +46,7 @@ Check as well the [RockstarGames Castle bypass](https://github.com/glizzykingdre
 Create a free account on the [TakionAPI Dashboard](https://takionapi.tech/trial) to start your trial and get your `TAKION_API_KEY`.
 
 ```bash
-git clone https://github.com/glizzykingdreko/x-twitter-login-castle-bypass.git
+git clone https://github.com/TomoeGozen82/x-twitter-login-castle-bypass.git
 cd x-twitter-login-castle-bypass
 pip install -r requirements.txt
 ```
@@ -132,7 +132,7 @@ The JetFuel onboarding XHRs share one header set. A few carry the weight:
 }
 ```
 
-I reversed this whole header set in [Episode 1, Headers generation](https://takionapi.tech/blog/x-former-twitter-login-flow-reconstruction-episode-1-headers-generation), the full study and its Python module are in [twitter-generator](https://github.com/glizzykingdreko/twitter-generator) ([LEARN.md](https://github.com/glizzykingdreko/twitter-generator/blob/main/LEARN.md)). The `authorization` Bearer is not a secret, it ships in x.com's own JavaScript and it's identical for every session, the real per-session auth is the guest token plus the Castle token. Order matters though. Castle reads header order as part of the fingerprint, so keep it exactly as the example sends it, don't sort it. This is also why `user-agent` and `sec-ch-ua` live inline in the header builder instead of some constant at the top of the file, the browser identity belongs right there in the headers you're reading.
+I reversed this whole header set in [Episode 1, Headers generation](https://takionapi.tech/blog/x-former-twitter-login-flow-reconstruction-episode-1-headers-generation), the full study and its Python module are in [twitter-generator](https://github.com/TomoeGozen82/twitter-generator) ([LEARN.md](https://github.com/TomoeGozen82/twitter-generator/blob/main/LEARN.md)). The `authorization` Bearer is not a secret, it ships in x.com's own JavaScript and it's identical for every session, the real per-session auth is the guest token plus the Castle token. Order matters though. Castle reads header order as part of the fingerprint, so keep it exactly as the example sends it, don't sort it. This is also why `user-agent` and `sec-ch-ua` live inline in the header builder instead of some constant at the top of the file, the browser identity belongs right there in the headers you're reading.
 
 ### Login Flow
 
@@ -161,8 +161,8 @@ A missing account isn't returned as an error string, it comes back under its own
 
 If you've read the blog series you're waiting for these two, so here's where they sit. The classic X automation path goes through `https://api.x.com/1.1/onboarding/task.json`, and that endpoint asks for both:
 
-- **`x-client-transaction-id`** on every request, the whole of [Episode 1, Headers generation](https://takionapi.tech/blog/x-former-twitter-login-flow-reconstruction-episode-1-headers-generation). Full study and Python module in [twitter-generator](https://github.com/glizzykingdreko/twitter-generator).
-- **`ui_metrics`**, the subject of [Episode 2, UI Metrics](https://takionapi.tech/blog/x-former-twitter-login-flow-reconstruction-episode-2-ui-metrics). During a username check the response carries a `LoginJSInstrumentationSubtask`, which tells the SDK to load and run the obfuscated script at `https://twitter.com/i/js_inst?c_name=ui_metrics`. That script does some bitwise math over a handful of numeric variables and writes a hidden `ui_metrics` input holding a JSON `{rf, s}`, the `rf` computed values and the `s` static signature. I solved it in Node, Go and Python in [x-twitter-ui-metrics](https://github.com/glizzykingdreko/x-twitter-ui-metrics).
+- **`x-client-transaction-id`** on every request, the whole of [Episode 1, Headers generation](https://takionapi.tech/blog/x-former-twitter-login-flow-reconstruction-episode-1-headers-generation). Full study and Python module in [twitter-generator](https://github.com/TomoeGozen82/twitter-generator).
+- **`ui_metrics`**, the subject of [Episode 2, UI Metrics](https://takionapi.tech/blog/x-former-twitter-login-flow-reconstruction-episode-2-ui-metrics). During a username check the response carries a `LoginJSInstrumentationSubtask`, which tells the SDK to load and run the obfuscated script at `https://twitter.com/i/js_inst?c_name=ui_metrics`. That script does some bitwise math over a handful of numeric variables and writes a hidden `ui_metrics` input holding a JSON `{rf, s}`, the `rf` computed values and the `s` static signature. I solved it in Node, Go and Python in [x-twitter-ui-metrics](https://github.com/TomoeGozen82/x-twitter-ui-metrics).
 
 The `x-client-transaction-id` from Episode 1 is a hash over the request method and path, a fingerprint read off a `twitter-site-verification` meta tag and the animation of a dynamic `ondemand.s` script, and the current timestamp:
 
@@ -252,16 +252,3 @@ That's JetFuel, X's binary onboarding format. Don't `.json()` it, pass `response
 > I'm on a different Castle-protected site, do you support it?
 
 Change the `website` parameter and you're most of the way there. Not sure about your target's flow? Hit me on Discord.
-
-## Connect with me
-
-If you found this project helpful or interesting, consider starring the repo and following me for more security research and tools, or buy me a coffee to keep me up
-
-<p align="center">
-  <a href="https://github.com/GlizzyKingDreko"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
-  <a href="https://twitter.com/GlizzyKingDreko"><img src="https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white" alt="Twitter"></a>
-  <a href="https://medium.com/@GlizzyKingDreko"><img src="https://img.shields.io/badge/Medium-12100E?style=for-the-badge&logo=medium&logoColor=white" alt="Medium"></a>
-  <a href="https://discord.com/users/GlizzyKingDreko"><img src="https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white" alt="Discord"></a>
-  <a href="mailto:glizzykingdreko@protonmail.com"><img src="https://img.shields.io/badge/ProtonMail-8B89CC?style=for-the-badge&logo=protonmail&logoColor=white" alt="Email"></a>
-  <a href="https://buymeacoffee.com/glizzykingdreko"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-yellow?style=for-the-badge&logo=buy-me-a-coffee&logoColor=white" alt="Buy Me a Coffee"></a>
-</p>
